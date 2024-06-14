@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 # Define the excel file path
 file_path = "your_log_file.xlsx"
@@ -15,8 +16,8 @@ unique_count = len(unique_names)
 print(f"List of unique names: {unique_names}")
 print(f"Count of unique names: {unique_count}")
 
-# Find names without "." character
-names_no_dot = df[~df['name'].str.contains('.')]['name'].tolist()
+# Find names without "." character (using regular expressions)
+names_no_dot = df[~df['name'].str.contains(r'\.')]['name'].tolist()
 print(f"Names without '.' character: {names_no_dot}")
 print("\n")
 
