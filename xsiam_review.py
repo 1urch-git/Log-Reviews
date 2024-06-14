@@ -9,6 +9,17 @@ df = pd.read_excel(file_path)
 # View entries filtered by unique source type
 source_types = df["sources"].unique()
 
+# Unique names and count
+unique_names = df['name'].unique()
+unique_count = len(unique_names)
+print(f"List of unique names: {unique_names}")
+print(f"Count of unique names: {unique_count}")
+
+# Find names without "." character
+names_no_dot = df[~df['name'].str.contains('.')]['name'].tolist()
+print(f"Names without '.' character: {names_no_dot}")
+print("\n")
+
 for source_type in source_types:
   filtered_df = df[df["sources"] == source_type]
   print(f"Entries from source: {source_type}")
