@@ -20,6 +20,7 @@ df['IP Addresses'] = df['IP Addresses'].astype(str)
 
 # View entries with "Externally inferred CVEs" and corresponding score
 cve_df = df[df["Externally inferred CVEs"].notnull()]
+sorted_cve_df = cve_df.sort_values(by="Externally Inferred Vulnerability Score", ascending=False)
 print(f"Entries with Externally inferred CVEs:")
 print(cve_df[["Name","Externally inferred CVEs", "Externally Inferred Vulnerability Score"]])
 print("\n")
