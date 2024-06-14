@@ -4,6 +4,7 @@ As long as the header values remain consistent, this should analyze all data in 
 """
 
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
 import re
 import matplotlib.pyplot as plt
 
