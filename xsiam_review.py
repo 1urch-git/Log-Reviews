@@ -15,10 +15,13 @@ for source_type in source_types:
   print(filtered_df)
   print("\n")
 
+# Ensure "IP Addresses" are strings
+df['IP Addresses'] = df['IP Addresses'].astype(str)
+
 # View entries with "Externally inferred CVEs" and corresponding score
 cve_df = df[df["Externally inferred CVEs"].notnull()]
 print(f"Entries with Externally inferred CVEs:")
-print(cve_df[["Externally inferred CVEs", "Externally Inferred Vulnerability Score"]])
+print(cve_df[["Name","Externally inferred CVEs", "Externally Inferred Vulnerability Score"]])
 print("\n")
 
 # Consolidate "Name" entries with comma-separated "IP Addresses"
