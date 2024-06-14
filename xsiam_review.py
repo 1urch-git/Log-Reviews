@@ -79,14 +79,13 @@ print(grouped_df)
 
 # Function to convert date string to datetime
 def convert_date_string(date_str):
+  if not pd.api.types.is_string_dtype(date_str):
+    return None  # Handle non-string values
   try:
     # Assuming format "Month Dayth Year Hour:Minute:Second"
-      if not pd.api.types.is_string_dtype(date_str):
-        return None
     return datetime.strptime(date_str, '%b %dth %Y %H:%M:%S')
   except ValueError:
-    # Handle potential parsing errors
-    return None
+    return None  # Handle potential parsing errors
 
 # Function to calculate cumulative activity for the full date range
 def calculate_cumulative_activity(df):
@@ -94,8 +93,8 @@ def calculate_cumulative_activity(df):
   df['First Observed'] = df['First Observed'].apply(convert_date_string)
   min_date = df['First Observed'].min()
   max_date = df['First Observed'].max()
-  if min_date is None or max_date is None:
-    # Handle empty DataFrames or parsing errors
+  if min_date is None or max_date is None or pd.isna(min_date) or pd.isna(max_date):
+    # Handle empty DataFrames or NaT values
     return pd.Series(dtype=int)  # Return an empty Series
   date_range = pd.date_range(start=min_date, end=max_date)
   # Count occurrences for each date in the range
@@ -118,7 +117,3 @@ plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
 plt.tight_layout()
 plt.show()
 
-
-
-# Close the excel file (not directly supported by pandas)
-# Consider saving the DataFrame to a new file if needed.
