@@ -81,6 +81,8 @@ print(grouped_df)
 def convert_date_string(date_str):
   try:
     # Assuming format "Month Dayth Year Hour:Minute:Second"
+      if not pd.api.types.is_string_dtype(date_str):
+        return None
     return datetime.strptime(date_str, '%b %dth %Y %H:%M:%S')
   except ValueError:
     # Handle potential parsing errors
