@@ -42,5 +42,11 @@ grouped_df = df.groupby("name")["IP Addresses"].agg(", ".join)
 print(f"Consolidated Names with comma-separated IP Addresses:")
 print(grouped_df)
 
+# Count unique source types
+source_counts = df['Sources'].value_counts()
+print(f"Unique source types and their counts:")
+print(source_counts)
+print("\n")
+
 # Close the excel file (not directly supported by pandas)
 # Consider saving the DataFrame to a new file if needed.
