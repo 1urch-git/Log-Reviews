@@ -77,6 +77,9 @@ print(grouped_df)
 
 # Function to calculate cumulative activity for a date range
 def calculate_cumulative_activity(start_date, end_date):
+  if not pd.api.types.is_numeric_dtype(start_date) or not pd.api.types.is_numeric_dtype(end_date):
+    # Handle empty date ranges
+    return pd.Series(dtype=int)  # Return an empty Series
   # Assuming "First Observed" and "Last Observed" are date/time formats
   date_range = pd.date_range(start=start_date, end=end_date)
   # Count occurrences for each date in the range
@@ -99,6 +102,7 @@ plt.title("Cumulative Activity Over Date Ranges")
 plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
 plt.tight_layout()
 plt.show()
+
 
 
 # Close the excel file (not directly supported by pandas)
