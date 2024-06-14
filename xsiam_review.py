@@ -7,8 +7,39 @@ file_path = "your_log_file.xlsx"
 # Read the excel file into a pandas DataFrame
 df = pd.read_excel(file_path)
 
-# View entries filtered by unique source type
-source_types = df["sources"].unique()
+######## XSIAM Data ####### 
+### This section counts the number of unique values in ech column ###
+# Count unique types
+type_counts = df['Type'].value_counts()
+print("\n")
+print(f"Unique Types and their counts:")
+print(type_counts)
+print("\n")
+
+# Count unique source types
+source_counts = df['Sources'].value_counts()
+print("\n")
+print(f"Unique source types and their counts:")
+print(source_counts)
+print("\n")
+
+# Count unique providers
+provider_counts = df['Externally Detected Providers'].value_counts()
+print("\n")
+print(f"Unique providers and their counts:")
+print(provider_counts)
+print("\n")
+
+# Count unique services
+services_counts = df['Active External Services Types'].value_counts()
+print("\n")
+print(f"Unique services and their counts:")
+print(services_counts)
+print("\n")
+
+######## Review domains, IPs ################
+#### This code will return a count and list of unique domains, IPs etc. from the Name column
+#### It will also provide uncommon entries, removing IPv6, IPv4, and domain names
 
 # Unique names and count
 unique_names = df['name'].unique()
@@ -20,12 +51,6 @@ print(f"Count of unique names: {unique_count}")
 names_no_dot_colon = df[~df['name'].str.contains(r'[.:]')]['name'].tolist()
 print(f"Names without '.' or ':' character: {names_no_dot_colon}")
 print("\n")
-
-for source_type in source_types:
-  filtered_df = df[df["sources"] == source_type]
-  print(f"Entries from source: {source_type}")
-  print(filtered_df)
-  print("\n")
 
 # Ensure "IP Addresses" are strings
 df['IP Addresses'] = df['IP Addresses'].astype(str)
@@ -42,11 +67,6 @@ grouped_df = df.groupby("name")["IP Addresses"].agg(", ".join)
 print(f"Consolidated Names with comma-separated IP Addresses:")
 print(grouped_df)
 
-# Count unique source types
-source_counts = df['Sources'].value_counts()
-print(f"Unique source types and their counts:")
-print(source_counts)
-print("\n")
 
 # Close the excel file (not directly supported by pandas)
 # Consider saving the DataFrame to a new file if needed.
