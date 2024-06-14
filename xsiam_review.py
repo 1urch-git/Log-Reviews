@@ -76,30 +76,31 @@ print(grouped_df)
 
 ### Activity Chart ###
 
-# Function to calculate cumulative activity for a date range
-def calculate_cumulative_activity(start_date, end_date):
-  if not pd.api.types.is_numeric_dtype(start_date) or not pd.api.types.is_numeric_dtype(end_date):
-    # Handle empty date ranges
+# Function to calculate cumulative activity for the full date range
+def calculate_cumulative_activity(df):
+  # Assuming "First Observed" is the date column for activity
+  min_date = df['First Observed'].min()
+  max_date = df['First Observed'].max()
+  if not pd.api.types.is_numeric_dtype(min_date) or not pd.api.types.is_numeric_dtype(max_date):
+    # Handle empty DataFrames
     return pd.Series(dtype=int)  # Return an empty Series
-  # Assuming "First Observed" and "Last Observed" are date/time formats
-  date_range = pd.date_range(start=start_date, end=end_date)
+  date_range = pd.date_range(start=min_date, end=max_date)
   # Count occurrences for each date in the range
-  daily_activity = df[(df['First Observed'] <= date_range) & (df['Last Observed'] >= date_range)]['First Observed'].dt.date.value_counts().sort_index(ascending=True)
+  daily_activity = df['First Observed'].dt.date.value_counts(normalize=False).sort_index(ascending=True)
+  # Reindex with full date range to ensure all dates are included (filling with zeros)
+  daily_activity = daily_activity.reindex(date_range, fill_value=0)
   # Calculate cumulative sum
   daily_activity = daily_activity.cumsum()
   return daily_activity
 
-# Calculate daily activity for each record
-daily_activities = df.apply(lambda row: calculate_cumulative_activity(row['First Observed'], row['Last Observed']), axis=1)
+# Calculate daily activity across all records
+daily_activity = calculate_cumulative_activity(df.copy())  # Avoid modifying original DataFrame
 
-# Combine daily activities into a single DataFrame (optional)
-total_activity = daily_activities.sum(axis=0)
-
-# Plot the cumulative activity (using total_activity or individual activities)
-total_activity.plot(kind='area', alpha=0.4, colormap='viridis')  # Adjust alpha and colormap as needed
+# Plot the cumulative activity
+daily_activity.plot(kind='area', alpha=0.4, colormap='viridis')  # Adjust alpha and colormap as needed
 plt.xlabel("Date")
 plt.ylabel("Cumulative Activity")
-plt.title("Cumulative Activity Over Date Ranges")
+plt.title("Cumulative Activity Over Full Date Range")
 plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
 plt.tight_layout()
 plt.show()
