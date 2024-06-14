@@ -5,7 +5,7 @@ As long as the header values remain consistent, this should analyze all data in 
 
 import pandas as pd
 import re
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 
 # Define the excel file path
 file_path = "your_log_file.xlsx"
