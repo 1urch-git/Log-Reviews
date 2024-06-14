@@ -1,3 +1,8 @@
+"""
+This python file is used to review the XSIAM data and provide insights inot what is there.
+As long as the header values remain consistent, this should analyze all data in the provided excel file.
+"""
+
 import pandas as pd
 import re
 
