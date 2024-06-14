@@ -76,13 +76,23 @@ print(grouped_df)
 
 ### Activity Chart ###
 
+# Function to convert date string to datetime
+def convert_date_string(date_str):
+  try:
+    # Assuming format "Month Dayth Year Hour:Minute:Second"
+    return datetime.strptime(date_str, '%b %dth %Y %H:%M:%S')
+  except ValueError:
+    # Handle potential parsing errors
+    return None
+
 # Function to calculate cumulative activity for the full date range
 def calculate_cumulative_activity(df):
   # Assuming "First Observed" is the date column for activity
+  df['First Observed'] = df['First Observed'].apply(convert_date_string)
   min_date = df['First Observed'].min()
   max_date = df['First Observed'].max()
-  if not pd.api.types.is_numeric_dtype(min_date) or not pd.api.types.is_numeric_dtype(max_date):
-    # Handle empty DataFrames
+  if min_date is None or max_date is None:
+    # Handle empty DataFrames or parsing errors
     return pd.Series(dtype=int)  # Return an empty Series
   date_range = pd.date_range(start=min_date, end=max_date)
   # Count occurrences for each date in the range
