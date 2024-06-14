@@ -73,6 +73,8 @@ grouped_df = df.groupby("name")["IP Addresses"].agg(", ".join)
 print(f"Consolidated Names with comma-separated IP Addresses:")
 print(grouped_df)
 
+### Activity Chart ###
+
 # Function to calculate cumulative activity for a date range
 def calculate_cumulative_activity(start_date, end_date):
   # Assuming "First Observed" and "Last Observed" are date/time formats
